@@ -1,0 +1,254 @@
+/* Post Card Styling */
+.post-card {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin: 20px 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    box-sizing: border-box;
+    
+    word-wrap: break-word; /* Ensures long words wrap */
+    overflow: hidden; /* Prevents content from overflowing */
+}
+
+/* Real Author Post Card Styling */
+.realAuthor-post-card {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin: 20px 0;
+    background-color: #f3cf76;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    box-sizing: border-box;
+   
+    word-wrap: break-word; /* Ensures long words wrap */
+    overflow: hidden; /* Prevents content from overflowing */
+}
+
+/* Title Styling */
+.post-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+    word-wrap: break-word; /* Ensure title wraps */
+    overflow-wrap: break-word; /* Prevents overflow of long words */
+}
+
+/* Content Styling */
+.post-content {
+    font-size: 1rem;
+    color: #555;
+    max-height: 200px; /* Limit height for long posts */
+    overflow-y: auto; /* Allows vertical scroll if content overflows */
+    margin-bottom: 15px;
+    padding: 5px;
+    border: 1px solid  gray;
+    word-wrap: break-word; /* Ensures content wraps */
+    overflow-wrap: break-word; /* Prevents overflow of long words */
+}
+
+/* Footer Styling */
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Buttons */
+.post-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.post-edit-btn,
+.post-delete-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.post-edit-btn {
+    background-color: #080808;
+    color: #fff;
+}
+
+.post-edit-btn:hover {
+    background-color: #323432;
+}
+
+.post-delete-btn {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.post-delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+.post-author-div {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.author-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .post-title {
+        font-size: 1.5rem;
+    }
+
+    .post-content {
+        font-size: 0.9rem;
+    }
+
+    .post-edit-btn,
+    .post-delete-btn {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .post-title {
+        font-size: 1.3rem;
+    }
+
+    .post-content {
+        font-size: 0.8rem;
+    }
+}
+
+
+/* Comment System CSS */
+
+.comments-section {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.comment {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.comment-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-details {
+    flex: 1;
+}
+
+.comment-actions button,
+.reply-actions button {
+    margin-left: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    color: gray;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.replies-section {
+    margin-left: 40px;
+    margin-top: 10px;
+    padding-left: 10px;
+    border-left: 2px solid #ccc;
+}
+
+.reply {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.reply-avatar {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.reply-details {
+    flex: 1;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.comment-form input {
+    width: 100%;
+    padding: 5px;
+}
+.comment-form button {
+    color: white;
+    background-color: #055c9f;
+    padding: 8px 12px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.comment-form button:hover {
+    
+    background-color: #03477b;
+}
+
+.reply-form {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.reply-form input {
+    width: 100%;
+    padding: 5px;
+}
+
+.reply-form button {
+    color: white;
+    background-color: #055c9f;
+    padding: 8px 12px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+.reply-form button:hover {
+    
+    background-color: #03477b;
+}

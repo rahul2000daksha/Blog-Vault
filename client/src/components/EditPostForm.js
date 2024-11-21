@@ -3,6 +3,7 @@ import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useParams, useNavigate } from 'react-router-dom';
+import './editform.css'; // Import the new CSS file
 
 const EditPostForm = () => {
     const { id } = useParams(); // Get post ID from URL
@@ -32,17 +33,25 @@ const EditPostForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Title"
-                required
-            />
-            <ReactQuill value={content} onChange={setContent} placeholder="Write your post here..." />
-            <button type="submit">Update Post</button>
-        </form>
+        <div className="edit-form-container">
+            <form className="edit-form" onSubmit={handleSubmit}>
+                <input
+                    className="edit-title-input"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Title"
+                    required
+                />
+                <ReactQuill
+                    className="edit-content-editor"
+                    value={content}
+                    onChange={setContent}
+                    placeholder="Write your post here..."
+                />
+                <button className="edit-submit-btn" type="submit">Update Post</button>
+            </form>
+        </div>
     );
 };
 

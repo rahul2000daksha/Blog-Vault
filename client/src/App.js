@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import EditPostForm from './components/EditPostForm';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -79,6 +80,12 @@ function App() {
                     path="/edit/:id"
                     element={isAuthenticated ? <EditPostForm /> : <Navigate to="/login" />}
                 />
+
+                <Route
+                    path="/profile"
+                    element= {<ProfilePage/>}
+                />
+
 
             </Routes>
         </Router>

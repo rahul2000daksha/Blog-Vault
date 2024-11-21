@@ -1,0 +1,77 @@
+/* Post Form Container */
+.post-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin: 100px 20px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+/* Title Input */
+.post-title-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Content Editor */
+.post-content-editor {
+    width: 100%;
+    border-radius: 5px;
+    max-height: 100px;
+}
+
+/* Submit Button */
+.post-submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #055c9f;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 50px;
+}
+
+.post-submit-btn:hover {
+    background-color: #03477b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .post-form {
+        padding: 15px;
+    }
+
+    .post-title-input, 
+    .post-submit-btn {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .post-form {
+        padding: 10px;
+        margin-top: 150px;
+    }
+
+    .post-title-input, 
+    .post-submit-btn {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+}

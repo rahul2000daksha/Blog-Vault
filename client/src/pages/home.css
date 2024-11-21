@@ -1,0 +1,136 @@
+/* Set up a full-page background image */
+.home-container {
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    height: 100vh;
+    background-image: url('../images/bg2.jpg');
+    /* Adjust the path as necessary */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow-y: scroll;
+    /* Ensure the overlay covers the entire container */
+
+}
+
+
+/* Title styling */
+.home-title {
+    font-size: 2.5rem;
+    color: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 3%;
+
+}
+
+/* Styling for the logout button */
+.profile-btn {
+    position: absolute;
+    right: 10%;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #161615;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+   
+}
+.logout-btn {
+    position: absolute;
+    right: 3%;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ff4c4c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 2;
+}
+
+.profile-btn:hover {
+    background-color: #6f6b6b;
+}
+
+.logout-btn:hover {
+    background-color: #d43d3d;
+}
+
+/* Posts container styling */
+.posts-container {
+    display: grid;
+    gap: 20px;
+    width: 90%;
+    position: absolute;
+    top: 70%;
+    left: 3%;
+    
+    
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .home-title {
+        font-size: 2rem;
+    }
+
+    .profile-btn {
+        right: 25%;
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+
+    .logout-btn {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+
+    .posts-container {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-container{
+        overflow-x: hidden;
+    }
+    .home-title {
+        font-size: 1.5rem;
+    }
+
+    .profile-btn {
+        
+        right: 25%;
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+
+    .logout-btn {
+        
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+
+    .PostSection-title{
+        margin-top: 40px;
+    }
+
+    .posts-container {
+        
+        max-width: 480px;
+        padding: 5px;
+        top: 70%;
+    }
+}
+
+
