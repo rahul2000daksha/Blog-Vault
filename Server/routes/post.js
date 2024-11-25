@@ -1,8 +1,23 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
 const Post = require('../models/Post');
 const { verifyToken } = require('../middleware/auth');
 const sanitizeHtml = require('sanitize-html');
 const router = express.Router();
+
+
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); // Specify upload directory
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
+});
+
+const upload = multer({ storage });
 
 // Create Post
 router.post('/', verifyToken, async (req, res) => {
@@ -29,18 +44,18 @@ router.post('/', verifyToken, async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const posts = await Post.find()
-        .populate([
-            { path: 'author', select: 'username profileImage' },
-            { 
-                path: 'comments.user', 
-                select: 'username profileImage'
-            },
-            { 
-                path: 'comments.replies.user', 
-                select: 'username profileImage'
-            }
-        ])
-        .sort({ createdAt: -1 });
+            .populate([
+                { path: 'author', select: 'username profileImage' },
+                {
+                    path: 'comments.user',
+                    select: 'username profileImage'
+                },
+                {
+                    path: 'comments.replies.user',
+                    select: 'username profileImage'
+                }
+            ])
+            .sort({ createdAt: -1 });
         res.json(posts);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -51,17 +66,17 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const post = await Post.findById(req.params.id)
-        .populate([
-            { path: 'author', select: 'username profileImage' }, // Populate post author
-            { 
-                path: 'comments.user', 
-                select: 'username profileImage' // Populate comment authors
-            },
-            { 
-                path: 'comments.replies.user', 
-                select: 'username profileImage' // Populate reply authors
-            }
-        ]);
+            .populate([
+                { path: 'author', select: 'username profileImage' }, // Populate post author
+                {
+                    path: 'comments.user',
+                    select: 'username profileImage' // Populate comment authors
+                },
+                {
+                    path: 'comments.replies.user',
+                    select: 'username profileImage' // Populate reply authors
+                }
+            ]);
         if (!post) return res.status(404).json({ message: 'Post not found' });
         res.json(post);
     } catch (error) {
@@ -111,15 +126,22 @@ router.delete('/:id', verifyToken, async (req, res) => {
 // Implementing Comment System routes
 
 // Add a comment
-router.post('/:postId/comments',verifyToken, async (req, res) => {
+router.post('/:postId/comments', verifyToken,upload.array('files', 5), async (req, res) => {
     try {
         const { content } = req.body;
         const userId = req.user.id; // Assume user is authenticated
+        const files = req.files.map(file => ({
+            filename: file.originalname,
+            url: `/uploads/${file.filename}`
+        }));
         const post = await Post.findById(req.params.postId);
 
-        post.comments.push({ user: userId, content });
+        post.comments.push({ user: userId, content,files });
         await post.save();
-        await post.populate('comments.user', 'username profileImage');
+        await post.populate([
+            { path: 'comments.user', select: 'username profileImage' },
+            { path: 'comments.replies.user', select: 'username profileImage' },
+        ]);
         res.status(201).json(post.comments);
     } catch (error) {
         console.error('Error adding comment:', error);
@@ -128,14 +150,18 @@ router.post('/:postId/comments',verifyToken, async (req, res) => {
 });
 
 // Add a reply to a comment
-router.post('/:postId/comments/:commentId/replies',verifyToken, async (req, res) => {
+router.post('/:postId/comments/:commentId/replies', verifyToken,upload.array('files', 5), async (req, res) => {
     try {
         const { content } = req.body;
         const userId = req.user.id; // Assume user is authenticated
+        const files = req.files.map(file => ({
+            filename: file.originalname,
+            url: `/uploads/${file.filename}`
+        }));
         const post = await Post.findById(req.params.postId);
 
         const comment = post.comments.id(req.params.commentId);
-        comment.replies.push({ user: userId, content });
+        comment.replies.push({ user: userId, content,files });
         await post.save();
 
         await post.populate([
@@ -150,12 +176,15 @@ router.post('/:postId/comments/:commentId/replies',verifyToken, async (req, res)
 });
 
 // Update a comment
-router.put('/:postId/comments/:commentId', async (req, res) => {
+router.put('/:postId/comments/:commentId', verifyToken, async (req, res) => {
     try {
         const { content } = req.body;
         const post = await Post.findById(req.params.postId);
 
         const comment = post.comments.id(req.params.commentId);
+        if (comment.user.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'You are not authorized to update this comment' });
+        }
         comment.content = content;
         await post.save();
 
@@ -166,11 +195,16 @@ router.put('/:postId/comments/:commentId', async (req, res) => {
 });
 
 // Delete a comment
-router.delete('/:postId/comments/:commentId', async (req, res) => {
+router.delete('/:postId/comments/:commentId', verifyToken, async (req, res) => {
     try {
         const post = await Post.findById(req.params.postId);
+        const comment = post.comments.id(req.params.commentId);
 
-        post.comments.id(req.params.commentId).remove();
+        if (comment.user.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'You are not authorized to delete this comment' });
+        }
+
+        comment.deleteOne();
         await post.save();
 
         res.status(200).json({ message: 'Comment deleted successfully' });
@@ -180,5 +214,49 @@ router.delete('/:postId/comments/:commentId', async (req, res) => {
 });
 
 
+
+// Update a reply
+router.put('/:postId/comments/:commentId/replies/:replyId', verifyToken, async (req, res) => {
+    try {
+        const { content } = req.body;
+        const post = await Post.findById(req.params.postId);
+
+        const comment = post.comments.id(req.params.commentId);
+        const reply = comment.replies.id(req.params.replyId);
+
+        if (reply.user.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'You are not authorized to update this reply' });
+        }
+
+        reply.content = content;
+        await post.save();
+
+        res.status(200).json(reply);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update reply' });
+    }
+});
+
+// Delete a reply
+router.delete('/:postId/comments/:commentId/replies/:replyId', verifyToken, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.postId);
+        const comment = post.comments.id(req.params.commentId);
+        const reply = comment.replies.id(req.params.replyId);
+
+        if (reply.user.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'You are not authorized to delete this reply' });
+        }
+
+        reply.deleteOne();
+        await post.save();
+
+        res.status(200).json({ message: 'Reply deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete reply' });
+    }
+});
+
+router.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 module.exports = router;

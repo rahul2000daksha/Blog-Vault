@@ -76,7 +76,7 @@ const ProfilePage = () => {
 
     return (
         <div className="profile-page">
-            <button className='back-btn' style={{zIndex:'1'}} onClick={() => navigate('/')}>Back</button>
+            <button className='back-btn' style={{ zIndex: '1' }} onClick={() => navigate('/')}>Back</button>
             <h1>Edit Profile</h1>
             <div className="profile-container">
                 <div className="image-preview">
@@ -95,6 +95,7 @@ const ProfilePage = () => {
                         placeholder="Update Username"
                     />
                     <button onClick={handleUpdateProfile}>Save Changes</button>
+                    
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ import PostForm from '../components/PostForm';
 import './home.css'; // Import the CSS file
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import logo from '../images/logo.png'
 
 const Home = ({ handleLogout }) => {
     const [posts, setPosts] = useState([]);
@@ -35,7 +36,7 @@ const Home = ({ handleLogout }) => {
 
     return (
         <div className="home-container">
-            <h1 className="home-title">Blog-Vault</h1>
+            <img className='logo' src={logo} alt=''/>
             <PostForm refetch={fetchPosts} />
             <button className='profile-btn' style={{zIndex:'1'}} onClick={() => navigate('/profile')}>Profile</button>
             <button className="logout-btn" onClick={handleLogout}>Logout</button>
