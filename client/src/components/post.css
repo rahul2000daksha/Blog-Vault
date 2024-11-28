@@ -149,6 +149,16 @@
     }
 }
 
+/* Like & Dislike CSS */
+
+.like-dislike-section button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 5px;
+}
+
 
 /* Comment System CSS */
 
@@ -176,17 +186,62 @@
 
 }
 
+
+.file-link {
+   
+    display: flex;
+    flex-direction:column;
+    width: 50%;
+    
+}
+.file-container img {
+    max-width: 50%;
+
+}
+
+.file-container video {
+    max-width: 100%;
+}
+.file-link-text{
+    color: gray;
+    font-size: 10px;
+}
+
+
+
+.reply-file-link {
+    
+    display: flex;
+    flex-direction:column;
+    
+}
+.reply-file-container img {
+    max-width: 20%;
+
+}
+
+.reply-file-container video {
+    max-width: 50%;
+}
+.reply-file-link-text{
+    color: gray;
+    font-size: 10px;
+}
+
+
 .comment-details-edit {
     width: 100%;
     display: flex;
     flex-direction: row;
     margin-top: 10px;
-    
+
 }
+
 .comment-details-edit input {
     width: 100%;
     padding: 5px;
 }
+
 .comment-details-edit button {
     color: white;
     background-color: #055c9f;
@@ -198,6 +253,7 @@
     transition: background-color 0.3s ease;
     cursor: pointer;
 }
+
 .comment-details-edit button:hover {
     background-color: #03477b;
 }
@@ -208,12 +264,14 @@
     display: flex;
     flex-direction: row;
     margin-top: 10px;
-    
+
 }
+
 .reply-details-edit input {
     width: 100%;
     padding: 5px;
 }
+
 .reply-details-edit button {
     color: white;
     background-color: #055c9f;
@@ -225,6 +283,7 @@
     transition: background-color 0.3s ease;
     cursor: pointer;
 }
+
 .reply-details-edit button:hover {
     background-color: #03477b;
 }
@@ -329,19 +388,24 @@
     .comments-section h4 {
         font-size: 0.8rem;
     }
+
     .comment-username {
-        
+
         font-size: 0.9rem;
     }
+
     .comment-content {
         font-size: 0.9rem;
     }
+
     .reply-username {
         font-size: 0.8rem;
     }
+
     .reply-content {
         font-size: 0.8rem;
     }
+
     .comment-details-edit {
         margin-top: 10px;
         display: flex;
@@ -350,12 +414,14 @@
         align-items: center;
         justify-content: center;
     }
+
     .comment-details-edit button {
         padding: 6px 8px;
         width: 30%;
         margin-top: 5px;
         margin-bottom: 5px;
     }
+
     .reply-details-edit {
         display: flex;
         flex-wrap: wrap;
@@ -363,19 +429,23 @@
         align-items: center;
         justify-content: center;
     }
+
     .reply-details-edit button {
         padding: 6px 8px;
         width: 45%;
     }
+
     .comment-form {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
+
     .comment-form input {
         width: 90%;
-        
+
     }
+
     .comment-form button {
         margin-left: 0;
         width: 20%;

@@ -123,6 +123,50 @@ router.delete('/:id', verifyToken, async (req, res) => {
     }
 });
 
+// Implementing Like and Dislike Routes
+// Like/Dislike a post
+
+router.post('/:id/like', async (req, res) => {
+    const { id } = req.params;
+    const userId = req.body.userId;
+    try {
+        const post = await Post.findById(id);
+        if (post.likes.includes(userId)) {
+            // Remove like
+            post.likes = post.likes.filter((uid) => uid.toString() !== userId);
+        } else {
+            // Add like
+            post.likes.push(userId);
+            post.dislikes = post.dislikes.filter((uid) => uid.toString() !== userId);// Remove dislike if exists
+        }
+        await post.save();
+        res.status(200).json({ likes: post.likes.length, dislikes: post.dislikes.length });
+    } catch (error) {
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+});
+
+router.post('/:id/dislike', async (req, res) => {
+    const { id } = req.params;
+    const userId = req.body.userId;
+    try {
+        const post = await Post.findById(id);
+        if (post.dislikes.includes(userId)) {
+            // Remove dislike
+            post.dislikes = post.dislikes.filter((uid) => uid.toString() !== userId);
+        } else {
+            // Add dislike
+            post.dislikes.push(userId);
+            post.likes = post.likes.filter((uid) => uid.toString() !== userId); // Remove like if exists
+        }
+        await post.save();
+        res.status(200).json({ likes: post.likes.length, dislikes: post.dislikes.length });
+    } catch (error) {
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+});
+
+
 // Implementing Comment System routes
 
 // Add a comment

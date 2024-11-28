@@ -17,6 +17,12 @@ const Post = ({ post, userId, handleDeletePost }) => {
     const [updatedCommentContent, setUpdatedCommentContent] = useState('');
     const [editingReplyId, setEditingReplyId] = useState(null);
     const [updatedReplyContent, setUpdatedReplyContent] = useState('');
+    const [isViewAllComment, setIsViewAllComment] = useState(false);
+
+    const [activeRepliesCommentId, setActiveRepliesCommentId] = useState(null);
+    const [likes, setLikes] = useState(post.likes?.length || 0);
+    const [dislikes, setDislikes] = useState(post.dislikes?.length || 0);
+
     const replyFormRef = useRef(null);
     const fileInputRef = useRef(null);
 
@@ -51,6 +57,29 @@ const Post = ({ post, userId, handleDeletePost }) => {
     const handleEdit = () => {
         navigate(`/edit/${post._id}`);
     };
+
+
+// Like and Disklikes Handler
+const handleLike = async () => {
+    try {
+        const res = await axios.post(`http://localhost:5000/api/posts/${post._id}/like`, { userId });
+        setLikes(res.data.likes);
+        setDislikes(res.data.dislikes);
+    } catch (err) {
+        console.error('Error in handleLike:', err.response ? err.response.data : err.message);
+    }
+};
+
+const handleDislike = async () => {
+    try {
+        const res = await axios.post(`http://localhost:5000/api/posts/${post._id}/dislike`, { userId });
+        setLikes(res.data.likes);
+        setDislikes(res.data.dislikes);
+    } catch (err) {
+        console.error(err);
+    }
+};
+
 
     const handleAddComment = async () => {
         if (!commentContent.trim() && commentFiles.length === 0) return;
@@ -201,6 +230,13 @@ const Post = ({ post, userId, handleDeletePost }) => {
         ? `http://localhost:5000${post.author.profileImage}`
         : defaultAvatar;
 
+    const HandleIsViewAllComment = () => {
+        setIsViewAllComment(!isViewAllComment);
+    }
+    const HandleViewAllReply = (commentId) => {
+        setActiveRepliesCommentId((prev) => (prev === commentId ? null : commentId));
+    }
+
 
     return (
         <div className={post.author?._id !== userId ? "post-card" : "realAuthor-post-card"}>
@@ -230,140 +266,217 @@ const Post = ({ post, userId, handleDeletePost }) => {
             <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }} />
 
 
+            <div className="like-dislike-section" style={{ textAlign: 'right', margin: '10px 0' }}>
+                <button onClick={handleLike} style={{ marginRight: '10px' }}>
+                    👍 {likes}
+                </button>
+                <button onClick={handleDislike}>
+                    👎 {dislikes}
+                </button>
+            </div>
+
+
+
             <div className='comments-section'>
-                <h4>Comments :</h4>
-                {comments.map((comment) => (
-                    <div key={comment._id} className="comment">
-                        <img
-                            src={`http://localhost:5000${comment.user?.profileImage}` || defaultAvatar}
-                            alt="Commenter"
-                            className="comment-avatar"
-                        />
-                        <div className="comment-details">
-                            <strong className='comment-username'>{comment.user?.username || 'Anonymous'}</strong>
-                            {editingCommentId === comment._id ? (
-                                <div className='comment-details-edit'>
-                                    <input
-                                        type="text"
-                                        value={updatedCommentContent}
-                                        onChange={(e) => setUpdatedCommentContent(e.target.value)}
-                                        placeholder="Edit your comment"
-                                    />
-                                    <button onClick={() => handleEditComment(comment._id)}>Save</button>
-                                    <button onClick={() => setEditingCommentId(null)}>Cancel</button>
-                                </div>
-                            ) : (
-                                <p className='comment-content'>{comment.content}</p>
-                            )}
-                            {comment.files?.length > 0 && (
-                                <div className="comment-files">
-                                    {comment.files.map((file) => (
-                                        <a key={file.url} href={`http://localhost:5000${file.url}`} target="_blank" rel="noopener noreferrer">
-                                            {file.filename}
-                                        </a>
-                                    ))}
-                                </div>
-                            )}
-                            <div className="comment-actions">
-                                {userId === comment.user?._id && (
-                                    <>
-                                        <button onClick={() => {
-                                            setEditingCommentId(comment._id);
-                                            setUpdatedCommentContent(comment.content);
-                                        }}>Edit</button>
-                                        <button onClick={() => handleDeleteComment(comment._id)}>Delete</button>
-                                    </>
+                <h4>
+                    Comments ({comments.length}) :
+                    <span style={{ color: isViewAllComment ? 'purple' : 'blue', fontSize: '0.8rem', textDecoration: 'underline', cursor: 'pointer', marginLeft: '10px', }} onClick={HandleIsViewAllComment}>
+                        {isViewAllComment ? "view less" : "view all"}
+                    </span>
+                </h4>
+
+                {isViewAllComment &&
+                    comments.map((comment) => (
+                        <div key={comment._id} className="comment">
+                            <img
+                                src={`http://localhost:5000${comment.user?.profileImage}` || defaultAvatar}
+                                alt="Commenter"
+                                className="comment-avatar"
+                            />
+                            <div className="comment-details">
+                                <strong className='comment-username'>{comment.user?.username || 'Anonymous'}</strong>
+                                {editingCommentId === comment._id ? (
+                                    <div className='comment-details-edit'>
+                                        <input
+                                            type="text"
+                                            value={updatedCommentContent}
+                                            onChange={(e) => setUpdatedCommentContent(e.target.value)}
+                                            placeholder="Edit your comment"
+                                        />
+                                        <button onClick={() => handleEditComment(comment._id)}>Save</button>
+                                        <button onClick={() => setEditingCommentId(null)}>Cancel</button>
+                                    </div>
+                                ) : (
+                                    <p className='comment-content'>{comment.content}</p>
                                 )}
-                                <button onClick={(e) => {
-                                    setActiveReplyForm(comment._id);
-                                    e.stopPropagation();
-                                }}>Reply</button>
-                            </div>
+                                {comment.files?.length > 0 && (
+                                    <div className="comment-files">
+                                        {comment.files.map((file) => {
+                                            const fileUrl = `http://localhost:5000${file.url}`;
+                                            const fileExtension = file.filename.split('.').pop().toLowerCase();
 
-                            {/* Reply form for reply to comment */}
-                            {activeReplyForm === comment._id && (
+                                            // Helper to check file type
+                                            const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
+                                            const isVideo = ['mp4', 'webm', 'ogg'].includes(fileExtension);
 
-                                <div ref={replyFormRef} className="reply-form">
-                                    <input
-                                        type="text"
-                                        placeholder="Write a reply..."
-                                        value={replyContent}
-                                        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the form
-                                        onChange={(e) => setReplyContent(e.target.value)}
-                                    />
-                                    <input
-                                        type="file"
-                                        multiple
-
-                                        onChange={(e) => setReplyFiles(e.target.files)}
-                                    />
-                                    <button onClick={() => {
-                                        handleAddReply(comment._id);
-
-                                    }
-                                    }>Reply</button>
-                                </div>
-                            )}
-
-
-                            {/* Display replies */}
-                            {comment.replies?.length > 0 && (
-                                <div className="replies-section">
-                                    {comment.replies.map((reply) => (
-                                        <div key={reply._id} className="reply">
-                                            <img
-                                                src={`http://localhost:5000${reply.user?.profileImage}` || defaultAvatar}
-                                                alt="Replier"
-                                                className="reply-avatar"
-                                            />
-                                            <div className="reply-details">
-                                                <strong className='reply-username'>{reply.user?.username || 'Anonymous'}</strong>
-                                                {editingReplyId === reply._id ? (
-                                                    <div className='reply-details-edit'>
-                                                        <input
-                                                            type="text"
-                                                            value={updatedReplyContent}
-                                                            onChange={(e) => setUpdatedReplyContent(e.target.value)}
-                                                            placeholder="Edit your reply"
-                                                        />
-                                                        <button onClick={() => handleEditReply(comment._id, reply._id)}>Save</button>
-                                                        <button onClick={() => setEditingReplyId(null)}>Cancel</button>
-                                                    </div>
-                                                ) : (
-                                                    <p className='reply-content'>{reply.content}</p>
-                                                )}
-                                                
-                                                {reply?.files?.length > 0 && (
-                                                    <div className="reply-files">
-                                                        {reply.files.map((file) => (
-                                                            
-                                                            <a key={file.url} href={`http://localhost:5000${file.url}`} target="_blank" rel="noopener noreferrer">
-                                                                {file.filename}
-                                                                
-                                                            </a>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                                <div className="reply-actions">
-                                                    {userId === reply.user?._id && (
-                                                        <>
-                                                            <button onClick={() => {
-                                                                setEditingReplyId(reply._id);
-                                                                setUpdatedReplyContent(reply.content);
-                                                            }}>Edit</button>
-                                                            <button onClick={() => handleDeleteReply(comment._id, reply._id)}>Delete</button>
-                                                        </>
-                                                    )}
-
+                                            return (
+                                                <div key={file.url} className="file-container ">
+                                                    <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="file-link ">
+                                                        <div>
+                                                            {isImage ? (
+                                                                <img src={fileUrl} alt={file.filename} className="file-image " />
+                                                            ) : isVideo ? (
+                                                                <video className="file-video" controls>
+                                                                    <source src={fileUrl} type={`video/${fileExtension}`} />
+                                                                    Your browser does not support the video tag.
+                                                                </video>
+                                                            ) : (
+                                                                <span>{file.filename}</span>
+                                                            )}
+                                                        </div>
+                                                        <span className='file-link-text'>Click on attach to see on full screen</span>
+                                                    </a>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    ))}
+                                            );
+                                        })}
+                                    </div>
+                                )}
+
+
+                                <div className="comment-actions">
+                                    {userId === comment.user?._id && (
+                                        <>
+                                            <button onClick={() => {
+                                                setEditingCommentId(comment._id);
+                                                setUpdatedCommentContent(comment.content);
+                                            }}>Edit</button>
+                                            <button onClick={() => handleDeleteComment(comment._id)}>Delete</button>
+                                        </>
+                                    )}
+                                    <button onClick={(e) => {
+                                        setActiveReplyForm(comment._id);
+                                        e.stopPropagation();
+                                    }}>Reply ({comment.replies?.length})</button>
+                                    <button style={{ fontSize: '0.7rem', textDecoration: 'underline', cursor: 'pointer', marginLeft: '10px', fontWeight: 'lighter' }} onClick={() => HandleViewAllReply(comment._id)}>{activeRepliesCommentId === comment._id ? "view less" : "view all reply"}</button>
                                 </div>
-                            )}
+
+                                {/* Reply form for reply to comment */}
+                                {activeReplyForm === comment._id && (
+
+                                    <div ref={replyFormRef} className="reply-form">
+                                        <input
+                                            type="text"
+                                            placeholder="Write a reply..."
+                                            value={replyContent}
+                                            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the form
+                                            onChange={(e) => setReplyContent(e.target.value)}
+                                        />
+                                        <input
+                                            type="file"
+                                            multiple
+
+                                            onChange={(e) => setReplyFiles(e.target.files)}
+                                        />
+                                        <button onClick={() => {
+                                            handleAddReply(comment._id);
+
+                                        }
+                                        }>Reply</button>
+                                    </div>
+                                )}
+
+
+                                {/* Display replies */}
+
+                                {activeRepliesCommentId === comment._id &&
+                                    comment.replies?.length > 0 && (
+                                        <div className="replies-section">
+                                            {comment.replies.map((reply) => (
+                                                <div key={reply._id} className="reply">
+                                                    <img
+                                                        src={`http://localhost:5000${reply.user?.profileImage}` || defaultAvatar}
+                                                        alt="Replier"
+                                                        className="reply-avatar"
+                                                    />
+                                                    <div className="reply-details">
+                                                        <strong className='reply-username'>{reply.user?.username || 'Anonymous'}</strong>
+                                                        {editingReplyId === reply._id ? (
+                                                            <div className='reply-details-edit'>
+                                                                <input
+                                                                    type="text"
+                                                                    value={updatedReplyContent}
+                                                                    onChange={(e) => setUpdatedReplyContent(e.target.value)}
+                                                                    placeholder="Edit your reply"
+                                                                />
+                                                                <button onClick={() => handleEditReply(comment._id, reply._id)}>Save</button>
+                                                                <button onClick={() => setEditingReplyId(null)}>Cancel</button>
+                                                            </div>
+                                                        ) : (
+                                                            <p className='reply-content'>{reply.content}</p>
+                                                        )}
+
+
+
+                                                        {reply?.files?.length > 0 && (
+                                                            <div className="reply-files">
+                                                                {reply.files.map((file) => {
+                                                                    const fileUrl = `http://localhost:5000${file.url}`;
+                                                                    const fileExtension = file.filename.split('.').pop().toLowerCase();
+
+                                                                    // Helper to check file type
+                                                                    const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
+                                                                    const isVideo = ['mp4', 'webm', 'ogg'].includes(fileExtension);
+
+                                                                    return (
+                                                                        <div key={file.url} className="reply-file-container ">
+                                                                            <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="reply-file-link ">
+                                                                                <div>
+                                                                                    {isImage ? (
+                                                                                        <img src={fileUrl} alt={file.filename} className="reply-file-image " />
+                                                                                    ) : isVideo ? (
+                                                                                        <video className="reply-file-video" controls>
+                                                                                            <source src={fileUrl} type={`video/${fileExtension}`} />
+                                                                                            Your browser does not support the video tag.
+                                                                                        </video>
+                                                                                    ) : (
+                                                                                        <span>{file.filename}</span>
+                                                                                    )}
+                                                                                </div>
+                                                                                <span className='reply-file-link-text'>Click on attach to see on full screen</span>
+                                                                            </a>
+                                                                        </div>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        )}
+
+
+
+
+
+
+
+                                                        <div className="reply-actions">
+                                                            {userId === reply.user?._id && (
+                                                                <>
+                                                                    <button onClick={() => {
+                                                                        setEditingReplyId(reply._id);
+                                                                        setUpdatedReplyContent(reply.content);
+                                                                    }}>Edit</button>
+                                                                    <button onClick={() => handleDeleteReply(comment._id, reply._id)}>Delete</button>
+                                                                </>
+                                                            )}
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                }
 
                 {/* Comment input */}
 
