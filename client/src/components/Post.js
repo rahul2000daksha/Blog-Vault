@@ -59,26 +59,26 @@ const Post = ({ post, userId, handleDeletePost }) => {
     };
 
 
-// Like and Disklikes Handler
-const handleLike = async () => {
-    try {
-        const res = await axios.post(`http://localhost:5000/api/posts/${post._id}/like`, { userId });
-        setLikes(res.data.likes);
-        setDislikes(res.data.dislikes);
-    } catch (err) {
-        console.error('Error in handleLike:', err.response ? err.response.data : err.message);
-    }
-};
+    // Like and Disklikes Handler
+    const handleLike = async () => {
+        try {
+            const res = await axios.post(`http://localhost:5000/api/posts/${post._id}/like`, { userId });
+            setLikes(res.data.likes);
+            setDislikes(res.data.dislikes);
+        } catch (err) {
+            console.error('Error in handleLike:', err.response ? err.response.data : err.message);
+        }
+    };
 
-const handleDislike = async () => {
-    try {
-        const res = await axios.post(`http://localhost:5000/api/posts/${post._id}/dislike`, { userId });
-        setLikes(res.data.likes);
-        setDislikes(res.data.dislikes);
-    } catch (err) {
-        console.error(err);
-    }
-};
+    const handleDislike = async () => {
+        try {
+            const res = await axios.post(`http://localhost:5000/api/posts/${post._id}/dislike`, { userId });
+            setLikes(res.data.likes);
+            setDislikes(res.data.dislikes);
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
 
     const handleAddComment = async () => {
@@ -102,6 +102,7 @@ const handleDislike = async () => {
             setComments(response.data);
             setCommentContent('');
             setCommentFiles([]);
+            setIsViewAllComment(true);
             if (fileInputRef.current) fileInputRef.current.value = '';
         } catch (error) {
             console.error('Failed to add comment:', error);
@@ -238,6 +239,14 @@ const handleDislike = async () => {
     }
 
 
+
+
+    const handleFileSelect = (e) => {
+        setCommentFiles(e.target.files);
+    };
+
+    console.log("commentfiles:", commentFiles)
+
     return (
         <div className={post.author?._id !== userId ? "post-card" : "realAuthor-post-card"}>
             <div className="post-footer">
@@ -266,11 +275,11 @@ const handleDislike = async () => {
             <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }} />
 
 
-            <div className="like-dislike-section" style={{ textAlign: 'right', margin: '10px 0' }}>
-                <button onClick={handleLike} style={{ marginRight: '10px' }}>
-                    👍 {likes}
+            <div className="like-dislike-section" style={{ textAlign: 'right' }}>
+                <button onClick={handleLike} style={{ marginRight: '5px', fontSize: '1rem' }}>
+                    ❤️{likes}
                 </button>
-                <button onClick={handleDislike}>
+                <button onClick={handleDislike} style={{ fontSize: '1rem' }}>
                     👎 {dislikes}
                 </button>
             </div>
@@ -482,18 +491,38 @@ const handleDislike = async () => {
 
                 <div className="comment-form">
                     <input
+                    className='comment-form-type'
                         type="text"
                         placeholder="Write a comment..."
                         value={commentContent}
                         onChange={(e) => setCommentContent(e.target.value)}
                     />
-                    <input
-                        type="file"
-                        multiple
-                        ref={fileInputRef}
-                        onChange={(e) => setCommentFiles(e.target.files)}
-                    />
-                    <button onClick={handleAddComment}>Send</button>
+                    <div className='comment-form-btn'>
+                        <input
+                            type="file"
+                            multiple
+                            ref={fileInputRef}
+                            onChange={handleFileSelect}
+                            style={{ display: 'none' }}
+                        />
+                        <button
+                        className='comment-form-addbtn'
+                            type="button"
+                            onClick={() => fileInputRef.current.click()}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: '50%',
+                                background: commentFiles?.length > 0 ? 'rgba(39, 251, 78, 1)' : 'black',
+                                border: '1px solid #ccc',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            <span className='comment-form-span'> {commentFiles?.length > 0 ? '-' : '+'} </span>
+                        </button>
+                        <button className='comment-form-sendbtn' onClick={handleAddComment}>Send</button>
+                    </div>
                 </div>
 
             </div>

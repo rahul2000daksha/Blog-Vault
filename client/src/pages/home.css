@@ -1,6 +1,6 @@
 /* Set up a full-page background image */
 .home-container {
-    
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,11 +20,13 @@
 .logo {
     height: 80px;
     width: 80px;
-    position:absolute;
+    position: absolute;
     border-radius: 100%;
     top: 3%;
     left: 3%;
+    box-shadow: 0px 4px 6px rgba(255, 252, 252, 0.2);
 }
+
 /* Title styling */
 .home-title {
     font-size: 2.5rem;
@@ -48,8 +50,10 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-   
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
 }
+
 .logout-btn {
     position: absolute;
     right: 3%;
@@ -63,6 +67,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     z-index: 2;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .profile-btn:hover {
@@ -81,8 +86,23 @@
     position: absolute;
     top: 70%;
     left: 3%;
-    
-    
+
+
+}
+
+.PostSection-title {
+    font-size: 2.5rem;
+    color: rgb(31, 30, 30);
+    z-index: 999;
+    position: absolute;
+    top: 58%;
+    left: 3%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+    background: #f8bd28;
+    border-radius: 10px;
+    padding: 10px;
+
+
 }
 
 /* Responsive adjustments */
@@ -108,40 +128,45 @@
 }
 
 @media (max-width: 480px) {
-    .home-container{
+    .home-container {
         overflow-x: hidden;
     }
+
     .logo {
         height: 40px;
         width: 40px;
     }
+
     .home-title {
         font-size: 1.5rem;
     }
 
     .profile-btn {
-        
+
         right: 25%;
         font-size: 0.8rem;
         padding: 6px 12px;
     }
 
     .logout-btn {
-        
+
         font-size: 0.8rem;
         padding: 6px 12px;
     }
 
-    .PostSection-title{
-        margin-top: 40px;
+    .PostSection-title {
+        top: 60%;
+        left: 5%;
+        margin-top: 100px;
+        padding: 10px;
+        font-size: 15px;
+
     }
 
     .posts-container {
-        
+
         max-width: 480px;
         padding: 5px;
-        top: 70%;
+        top: 80%;
     }
 }
-
-

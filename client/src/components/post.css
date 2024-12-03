@@ -3,13 +3,13 @@
     display: flex;
     flex-direction: column;
     padding: 10px;
-    margin: 20px 0;
-    background-color: rgba(255, 255, 255, 0.9);
+    margin-top: 10px;
+    background-color: rgba(249, 255, 250, 0.9);
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 800px;
     box-sizing: border-box;
-
+    margin-bottom: 5px;
     word-wrap: break-word;
     /* Ensures long words wrap */
     overflow: hidden;
@@ -21,13 +21,13 @@
     display: flex;
     flex-direction: column;
     padding: 10px;
-    margin: 20px 0;
-    background-color: #f3cf76;
+    margin-top: 10px;
+    background-color: rgba(251, 244, 180, 0.9);
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 800px;
     box-sizing: border-box;
-
+    margin-bottom: 5px;
     word-wrap: break-word;
     /* Ensures long words wrap */
     overflow: hidden;
@@ -50,13 +50,15 @@
 .post-content {
     font-size: 1rem;
     color: #050505;
+    background: white;
     max-height: 200px;
     /* Limit height for long posts */
     overflow-y: auto;
     /* Allows vertical scroll if content overflows */
     margin-bottom: 15px;
     padding: 5px;
-    border: 1px solid gray;
+    border: 1px solid lightgray;
+    border-radius: 5px;
     word-wrap: break-word;
     /* Ensures content wraps */
     overflow-wrap: break-word;
@@ -163,7 +165,7 @@
 /* Comment System CSS */
 
 .comments-section {
-    margin-top: 20px;
+
     padding: 10px;
     background-color: #f9f9f9;
     border-radius: 8px;
@@ -188,12 +190,13 @@
 
 
 .file-link {
-   
+
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     width: 50%;
-    
+
 }
+
 .file-container img {
     max-width: 50%;
 
@@ -202,7 +205,8 @@
 .file-container video {
     max-width: 100%;
 }
-.file-link-text{
+
+.file-link-text {
     color: gray;
     font-size: 10px;
 }
@@ -210,11 +214,12 @@
 
 
 .reply-file-link {
-    
+
     display: flex;
-    flex-direction:column;
-    
+    flex-direction: column;
+
 }
+
 .reply-file-container img {
     max-width: 20%;
 
@@ -223,7 +228,8 @@
 .reply-file-container video {
     max-width: 50%;
 }
-.reply-file-link-text{
+
+.reply-file-link-text {
     color: gray;
     font-size: 10px;
 }
@@ -328,21 +334,45 @@
 .comment-form {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    height: 5vh;
+    padding: 3px;
 }
 
-.comment-form input {
-    width: 44%;
+.comment-form-type {
+
+    width: 70%;
     padding: 5px;
+    border: 1px solid gray;
 }
 
-.comment-form button {
+.comment-form-btn {
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: row;
+    width: 30%;
+
+}
+
+.comment-form-addbtn {
+    height: 40px;
+    width: 40px;
+}
+
+.comment-form-span {
+    color: white;
+    font-size: 1rem;
+
+}
+
+.comment-form-sendbtn {
+    padding: 8px 12px;
     color: white;
     background-color: #055c9f;
-    padding: 8px 12px;
-    margin-left: 10px;
-    border: none;
+    width: 50%;
+    margin-left: 20px;
     border-radius: 4px;
     font-size: 0.8rem;
     transition: background-color 0.3s ease;
@@ -435,19 +465,48 @@
         width: 45%;
     }
 
-    .comment-form {
+    .comment-form-type {
+        width: 60%;
+    }
+
+    .comment-form-btn {
+        width: 40%;
+    }
+
+    .comment-form-addbtn {
+        height: 30px;
+        width: 30px;
+    }
+
+    .comment-form-span {}
+
+    .comment-form-sendbtn {
+        margin-left: 2px;
+        padding: 8px 12px;
+        color: white;
+        background-color: #055c9f;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .reply-form {
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 5px;
     }
 
-    .comment-form input {
-        width: 90%;
-
+    .reply-form button {
+        width: 30%;
+        padding: 4px 6px;
+        margin-left: 0px;
+        border: none;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
     }
 
-    .comment-form button {
-        margin-left: 0;
-        width: 20%;
-    }
 }

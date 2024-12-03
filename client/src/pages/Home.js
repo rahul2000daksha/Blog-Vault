@@ -40,7 +40,7 @@ const Home = ({ handleLogout }) => {
             <PostForm refetch={fetchPosts} />
             <button className='profile-btn' style={{zIndex:'1'}} onClick={() => navigate('/profile')}>Profile</button>
             <button className="logout-btn" onClick={handleLogout}>Logout</button>
-            <h1 className="PostSection-title" style={{zIndex:'1',position:'absolute',top:'60%', color:'white',textDecoration:'underline'}}>Post Feed</h1>
+            <h1 className="PostSection-title" >Post Feed : </h1>
             <div className="posts-container">
                 {posts.map(post => (
                     <Post key={post._id} post={post} userId={userId} handleDeletePost={handleDeletePost} />
