@@ -13,7 +13,7 @@ const EditPostForm = () => {
 
     useEffect(() => {
         const fetchPost = async () => {
-            const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
+            const response = await axios.get(`https://blog-vault-t4ak.onrender.com/api/posts/${id}`);
             setTitle(response.data.title);
             setContent(response.data.content);
         };

@@ -17,7 +17,7 @@ const ProfilePage = () => {
         const fetchUserData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:5000/api/profile/user', {
+                const response = await axios.get('https://blog-vault-t4ak.onrender.com/api/profile/user', {
                     headers: { Authorization: token },
                 });
 
@@ -49,7 +49,7 @@ const ProfilePage = () => {
             formData.append('userId', userId);
 
             const token = localStorage.getItem('token');
-            const response = await axios.put('http://localhost:5000/api/profile/update', formData, {
+            const response = await axios.put('https://blog-vault-t4ak.onrender.com/api/profile/update', formData, {
                 headers: {
                     Authorization: token,
                     'Content-Type': 'multipart/form-data',
@@ -71,7 +71,7 @@ const ProfilePage = () => {
     }
 
     const profileImageSrc = profileImage
-        ? `http://localhost:5000${profileImage}`
+        ? `https://blog-vault-t4ak.onrender.com${profileImage}`
         : defaultAvatar;
 
     return (

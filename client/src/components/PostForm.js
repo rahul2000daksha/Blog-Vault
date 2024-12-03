@@ -12,7 +12,7 @@ const PostForm = ({ refetch }) => {
         e.preventDefault();
 
         const token = localStorage.getItem('token'); // Get the token from local storage
-        await axios.post('http://localhost:5000/api/posts/', { title, content }, {
+        await axios.post('https://blog-vault-t4ak.onrender.com/api/posts/', { title, content }, {
             headers: { Authorization: token },
         });
 

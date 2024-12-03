@@ -11,7 +11,7 @@ const Register = ({ onRegister, handleOldUser }) => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        await axios.post('http://localhost:5000/api/users/register', { username, email, password });
+        await axios.post('https://blog-vault-t4ak.onrender.com/api/users/register', { username, email, password });
         onRegister();
         navigate('/login');
     };

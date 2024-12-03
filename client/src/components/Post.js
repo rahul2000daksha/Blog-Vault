@@ -45,7 +45,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
     const handleDelete = async () => {
         const token = localStorage.getItem('token');
         try {
-            await axios.delete(`http://localhost:5000/api/posts/${post._id}`, {
+            await axios.delete(`https://blog-vault-t4ak.onrender.com/api/posts/${post._id}`, {
                 headers: { Authorization: token },
             });
             handleDeletePost(post._id);
@@ -62,7 +62,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
     // Like and Disklikes Handler
     const handleLike = async () => {
         try {
-            const res = await axios.post(`http://localhost:5000/api/posts/${post._id}/like`, { userId });
+            const res = await axios.post(`https://blog-vault-t4ak.onrender.com/api/posts/${post._id}/like`, { userId });
             setLikes(res.data.likes);
             setDislikes(res.data.dislikes);
         } catch (err) {
@@ -72,7 +72,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
 
     const handleDislike = async () => {
         try {
-            const res = await axios.post(`http://localhost:5000/api/posts/${post._id}/dislike`, { userId });
+            const res = await axios.post(`https://blog-vault-t4ak.onrender.com/api/posts/${post._id}/dislike`, { userId });
             setLikes(res.data.likes);
             setDislikes(res.data.dislikes);
         } catch (err) {
@@ -91,7 +91,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                `http://localhost:5000/api/posts/${post._id}/comments`,
+                `https://blog-vault-t4ak.onrender.com/api/posts/${post._id}/comments`,
                 formData,
                 {
                     headers: { Authorization: token },
@@ -115,7 +115,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.put(
-                `http://localhost:5000/api/posts/${post._id}/comments/${commentId}`,
+                `https://blog-vault-t4ak.onrender.com/api/posts/${post._id}/comments/${commentId}`,
                 { content: updatedCommentContent },
                 { headers: { Authorization: token } }
             );
@@ -136,7 +136,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
     const handleDeleteComment = async (commentId) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:5000/api/posts/${post._id}/comments/${commentId}`, {
+            await axios.delete(`https://blog-vault-t4ak.onrender.com/api/posts/${post._id}/comments/${commentId}`, {
                 headers: { Authorization: token },
             });
 
@@ -157,7 +157,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                `http://localhost:5000/api/posts/${post._id}/comments/${commentId}/replies`,
+                `https://blog-vault-t4ak.onrender.com/api/posts/${post._id}/comments/${commentId}/replies`,
                 formData,
                 {
                     headers: { Authorization: token },
@@ -180,7 +180,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.put(
-                `http://localhost:5000/api/posts/${post._id}/comments/${commentId}/replies/${replyId}`,
+                `https://blog-vault-t4ak.onrender.com/api/posts/${post._id}/comments/${commentId}/replies/${replyId}`,
                 { content: updatedReplyContent },
                 { headers: { Authorization: token } }
             );
@@ -208,7 +208,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
         try {
             const token = localStorage.getItem('token');
             await axios.delete(
-                `http://localhost:5000/api/posts/${post._id}/comments/${commentId}/replies/${replyId}`,
+                `https://blog-vault-t4ak.onrender.com/api/posts/${post._id}/comments/${commentId}/replies/${replyId}`,
                 { headers: { Authorization: token } }
             );
 
@@ -228,7 +228,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
 
 
     const profileImageSrc = post.author?.profileImage
-        ? `http://localhost:5000${post.author.profileImage}`
+        ? `https://blog-vault-t4ak.onrender.com${post.author.profileImage}`
         : defaultAvatar;
 
     const HandleIsViewAllComment = () => {
@@ -298,7 +298,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
                     comments.map((comment) => (
                         <div key={comment._id} className="comment">
                             <img
-                                src={`http://localhost:5000${comment.user?.profileImage}` || defaultAvatar}
+                                src={`https://blog-vault-t4ak.onrender.com${comment.user?.profileImage}` || defaultAvatar}
                                 alt="Commenter"
                                 className="comment-avatar"
                             />
@@ -321,7 +321,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
                                 {comment.files?.length > 0 && (
                                     <div className="comment-files">
                                         {comment.files.map((file) => {
-                                            const fileUrl = `http://localhost:5000${file.url}`;
+                                            const fileUrl = `https://blog-vault-t4ak.onrender.com${file.url}`;
                                             const fileExtension = file.filename.split('.').pop().toLowerCase();
 
                                             // Helper to check file type
@@ -380,7 +380,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
                                             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the form
                                             onChange={(e) => setReplyContent(e.target.value)}
                                         />
-                                        <input
+                                        <input className='replyform-fileInput'
                                             type="file"
                                             multiple
 
@@ -403,7 +403,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
                                             {comment.replies.map((reply) => (
                                                 <div key={reply._id} className="reply">
                                                     <img
-                                                        src={`http://localhost:5000${reply.user?.profileImage}` || defaultAvatar}
+                                                        src={`https://blog-vault-t4ak.onrender.com${reply.user?.profileImage}` || defaultAvatar}
                                                         alt="Replier"
                                                         className="reply-avatar"
                                                     />
@@ -429,7 +429,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
                                                         {reply?.files?.length > 0 && (
                                                             <div className="reply-files">
                                                                 {reply.files.map((file) => {
-                                                                    const fileUrl = `http://localhost:5000${file.url}`;
+                                                                    const fileUrl = `https://blog-vault-t4ak.onrender.com${file.url}`;
                                                                     const fileExtension = file.filename.split('.').pop().toLowerCase();
 
                                                                     // Helper to check file type
