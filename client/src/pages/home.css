@@ -128,8 +128,15 @@
 }
 
 @media (max-width: 480px) {
+
+    
+    
     .home-container {
         overflow-x: hidden;
+        body {
+            background-size: cover; /* Keeps it proportional */
+            background-position: center; /* Centers the background image */
+        }
     }
 
     .logo {

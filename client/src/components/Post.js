@@ -245,7 +245,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
         setCommentFiles(e.target.files);
     };
 
-    console.log("commentfiles:", commentFiles)
+    console.log("Profile:", profileImageSrc)
 
     return (
         <div className={post.author?._id !== userId ? "post-card" : "realAuthor-post-card"}>
