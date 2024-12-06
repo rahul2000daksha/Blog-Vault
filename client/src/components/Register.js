@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './register.css'; // Link to the CSS file
+const apiUrl = process.env.REACT_APP_API_URL;
+
 
 const Register = ({ onRegister, handleOldUser }) => {
     const [username, setUsername] = useState('');
@@ -11,7 +13,7 @@ const Register = ({ onRegister, handleOldUser }) => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        await axios.post('http://localhost:5000/api/users/register', { username, email, password });
+        await axios.post(`${apiUrl}/api/users/register`, { username, email, password });
         onRegister();
         navigate('/login');
     };

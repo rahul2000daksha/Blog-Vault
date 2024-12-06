@@ -3,6 +3,8 @@ import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './postForm.css'; // Import the new CSS file
+const apiUrl = process.env.REACT_APP_API_URL;
+
 
 const PostForm = ({ refetch }) => {
     const [title, setTitle] = useState('');
@@ -12,7 +14,7 @@ const PostForm = ({ refetch }) => {
         e.preventDefault();
 
         const token = localStorage.getItem('token'); // Get the token from local storage
-        await axios.post('http://localhost:5000/api/posts/', { title, content }, {
+        await axios.post(`${apiUrl}/api/posts/`, { title, content }, {
             headers: { Authorization: token },
         });
 

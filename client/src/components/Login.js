@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './register.css'; // Same CSS file used for styling both components
+const apiUrl = process.env.REACT_APP_API_URL;
+
 
 const Login = ({ onLogin, handleNewUser }) => {
     const [email, setEmail] = useState('');
@@ -13,7 +15,7 @@ const Login = ({ onLogin, handleNewUser }) => {
         e.preventDefault();
         setError('');
         try {
-            const response = await axios.post('http://localhost:5000/api/users/login', { email, password });
+            const response = await axios.post(`${apiUrl}/api/users/login`, { email, password });
             onLogin(response.data.token);
             navigate('/');
         } catch (error) {

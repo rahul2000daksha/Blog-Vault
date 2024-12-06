@@ -4,6 +4,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import './editform.css'; // Import the new CSS file
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const EditPostForm = () => {
     const { id } = useParams(); // Get post ID from URL
@@ -13,7 +14,7 @@ const EditPostForm = () => {
 
     useEffect(() => {
         const fetchPost = async () => {
-            const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
+            const response = await axios.get(`${apiUrl}/api/posts/${id}`);
             setTitle(response.data.title);
             setContent(response.data.content);
         };
@@ -25,7 +26,7 @@ const EditPostForm = () => {
         e.preventDefault();
 
         const token = localStorage.getItem('token'); // Get the token from local storage
-        await axios.put(`http://localhost:5000/api/posts/${id}`, { title, content }, {
+        await axios.put(`${apiUrl}/api/posts/${id}`, { title, content }, {
             headers: { Authorization: token },
         });
 

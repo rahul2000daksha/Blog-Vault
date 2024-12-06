@@ -6,6 +6,8 @@ import './home.css'; // Import the CSS file
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import logo from '../images/logo.png'
+const apiUrl = process.env.REACT_APP_API_URL;
+
 
 const Home = ({ handleLogout }) => {
     const [posts, setPosts] = useState([]);
@@ -18,7 +20,7 @@ const Home = ({ handleLogout }) => {
     
 
     const fetchPosts = async () => {
-        const response = await axios.get('http://localhost:5000/api/posts/');
+        const response = await axios.get(`${apiUrl}/api/posts/`);
         setPosts(response.data);
     };
 

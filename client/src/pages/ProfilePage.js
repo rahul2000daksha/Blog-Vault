@@ -3,6 +3,8 @@ import axios from 'axios';
 import './profilePage.css';
 import { useNavigate } from 'react-router-dom';
 import defaultAvatar from '../images/Default-User-Image.png';
+const apiUrl = process.env.REACT_APP_API_URL;
+
 
 const ProfilePage = () => {
     const [username, setUsername] = useState('');
@@ -17,7 +19,7 @@ const ProfilePage = () => {
         const fetchUserData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:5000/api/profile/user', {
+                const response = await axios.get(`${apiUrl}/api/profile/user`, {
                     headers: { Authorization: token },
                 });
 
@@ -49,7 +51,7 @@ const ProfilePage = () => {
             formData.append('userId', userId);
 
             const token = localStorage.getItem('token');
-            const response = await axios.put('http://localhost:5000/api/profile/update', formData, {
+            const response = await axios.put(`${apiUrl}/api/profile/update`, formData, {
                 headers: {
                     Authorization: token,
                     'Content-Type': 'multipart/form-data',
@@ -71,7 +73,7 @@ const ProfilePage = () => {
     }
 
     const profileImageSrc = profileImage
-        ? `http://localhost:5000${profileImage}`
+        ? `${apiUrl}${profileImage}`
         : defaultAvatar;
 
     return (

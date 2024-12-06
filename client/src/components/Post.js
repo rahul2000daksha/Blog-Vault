@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Form, useNavigate } from 'react-router-dom';
 import './post.css';
 import defaultAvatar from '../images/Default-User-Image.png';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 
 const Post = ({ post, userId, handleDeletePost }) => {
@@ -45,7 +46,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
     const handleDelete = async () => {
         const token = localStorage.getItem('token');
         try {
-            await axios.delete(`http://localhost:5000/api/posts/${post._id}`, {
+            await axios.delete(`${apiUrl}/api/posts/${post._id}`, {
                 headers: { Authorization: token },
             });
             handleDeletePost(post._id);
@@ -62,7 +63,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
     // Like and Disklikes Handler
     const handleLike = async () => {
         try {
-            const res = await axios.post(`http://localhost:5000/api/posts/${post._id}/like`, { userId });
+            const res = await axios.post(`${apiUrl}/api/posts/${post._id}/like`, { userId });
             setLikes(res.data.likes);
             setDislikes(res.data.dislikes);
         } catch (err) {
@@ -72,7 +73,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
 
     const handleDislike = async () => {
         try {
-            const res = await axios.post(`http://localhost:5000/api/posts/${post._id}/dislike`, { userId });
+            const res = await axios.post(`${apiUrl}/api/posts/${post._id}/dislike`, { userId });
             setLikes(res.data.likes);
             setDislikes(res.data.dislikes);
         } catch (err) {
@@ -91,7 +92,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                `http://localhost:5000/api/posts/${post._id}/comments`,
+                `${apiUrl}/api/posts/${post._id}/comments`,
                 formData,
                 {
                     headers: { Authorization: token },
@@ -115,7 +116,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.put(
-                `http://localhost:5000/api/posts/${post._id}/comments/${commentId}`,
+                `${apiUrl}/api/posts/${post._id}/comments/${commentId}`,
                 { content: updatedCommentContent },
                 { headers: { Authorization: token } }
             );
@@ -136,7 +137,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
     const handleDeleteComment = async (commentId) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:5000/api/posts/${post._id}/comments/${commentId}`, {
+            await axios.delete(`${apiUrl}/api/posts/${post._id}/comments/${commentId}`, {
                 headers: { Authorization: token },
             });
 
@@ -157,7 +158,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                `http://localhost:5000/api/posts/${post._id}/comments/${commentId}/replies`,
+                `${apiUrl}/api/posts/${post._id}/comments/${commentId}/replies`,
                 formData,
                 {
                     headers: { Authorization: token },
@@ -180,7 +181,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.put(
-                `http://localhost:5000/api/posts/${post._id}/comments/${commentId}/replies/${replyId}`,
+                `${apiUrl}/api/posts/${post._id}/comments/${commentId}/replies/${replyId}`,
                 { content: updatedReplyContent },
                 { headers: { Authorization: token } }
             );
@@ -208,7 +209,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
         try {
             const token = localStorage.getItem('token');
             await axios.delete(
-                `http://localhost:5000/api/posts/${post._id}/comments/${commentId}/replies/${replyId}`,
+                `${apiUrl}/api/posts/${post._id}/comments/${commentId}/replies/${replyId}`,
                 { headers: { Authorization: token } }
             );
 
@@ -228,7 +229,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
 
 
     const profileImageSrc = post.author?.profileImage
-        ? `http://localhost:5000${post.author.profileImage}`
+        ? `${apiUrl}${post.author.profileImage}`
         : defaultAvatar;
 
     const HandleIsViewAllComment = () => {
@@ -298,7 +299,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
                     comments.map((comment) => (
                         <div key={comment._id} className="comment">
                             <img
-                                src={`http://localhost:5000${comment.user?.profileImage}` || defaultAvatar}
+                                src={`${apiUrl}${comment.user?.profileImage}` || defaultAvatar}
                                 alt="Commenter"
                                 className="comment-avatar"
                             />
@@ -321,7 +322,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
                                 {comment.files?.length > 0 && (
                                     <div className="comment-files">
                                         {comment.files.map((file) => {
-                                            const fileUrl = `http://localhost:5000${file.url}`;
+                                            const fileUrl = `${apiUrl}${file.url}`;
                                             const fileExtension = file.filename.split('.').pop().toLowerCase();
 
                                             // Helper to check file type
@@ -403,7 +404,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
                                             {comment.replies.map((reply) => (
                                                 <div key={reply._id} className="reply">
                                                     <img
-                                                        src={`http://localhost:5000${reply.user?.profileImage}` || defaultAvatar}
+                                                        src={`${apiUrl}${reply.user?.profileImage}` || defaultAvatar}
                                                         alt="Replier"
                                                         className="reply-avatar"
                                                     />
@@ -429,7 +430,7 @@ const Post = ({ post, userId, handleDeletePost }) => {
                                                         {reply?.files?.length > 0 && (
                                                             <div className="reply-files">
                                                                 {reply.files.map((file) => {
-                                                                    const fileUrl = `http://localhost:5000${file.url}`;
+                                                                    const fileUrl = `${apiUrl}${file.url}`;
                                                                     const fileExtension = file.filename.split('.').pop().toLowerCase();
 
                                                                     // Helper to check file type
