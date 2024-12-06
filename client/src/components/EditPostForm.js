@@ -13,7 +13,7 @@ const EditPostForm = () => {
 
     useEffect(() => {
         const fetchPost = async () => {
-            const response = await axios.get(`https://blog-vault-t4ak.onrender.com/api/posts/${id}`);
+            const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
             setTitle(response.data.title);
             setContent(response.data.content);
         };
@@ -25,7 +25,7 @@ const EditPostForm = () => {
         e.preventDefault();
 
         const token = localStorage.getItem('token'); // Get the token from local storage
-        await axios.put(`https://blog-vault-t4ak.onrender.com/api/posts/${id}`, { title, content }, {
+        await axios.put(`http://localhost:5000/api/posts/${id}`, { title, content }, {
             headers: { Authorization: token },
         });
 

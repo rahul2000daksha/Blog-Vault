@@ -13,7 +13,7 @@ const Login = ({ onLogin, handleNewUser }) => {
         e.preventDefault();
         setError('');
         try {
-            const response = await axios.post('https://blog-vault-t4ak.onrender.com/api/users/login', { email, password });
+            const response = await axios.post('http://localhost:5000/api/users/login', { email, password });
             onLogin(response.data.token);
             navigate('/');
         } catch (error) {

@@ -18,7 +18,7 @@ const Home = ({ handleLogout }) => {
     
 
     const fetchPosts = async () => {
-        const response = await axios.get('https://blog-vault-t4ak.onrender.com/api/posts/');
+        const response = await axios.get('http://localhost:5000/api/posts/');
         setPosts(response.data);
     };
 

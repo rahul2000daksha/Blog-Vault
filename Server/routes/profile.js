@@ -4,10 +4,8 @@ const path = require('path');
 const User = require('../models/User'); // Adjust the path to your User model
 const { verifyToken } = require('../middleware/auth');
 const router = express.Router();
+const upload = multer({ dest: 'uploads/' }); // Save uploaded files to "uploads/" folder
 
-const upload = multer({
-    dest: path.join(__dirname, '../uploads'), // Ensure correct relative path
-});
 
 
 // Get current user data

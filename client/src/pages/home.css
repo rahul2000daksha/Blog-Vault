@@ -129,14 +129,10 @@
 
 @media (max-width: 480px) {
 
-    
-    
+
+
     .home-container {
-        overflow-x: hidden;
-        body {
-            background-size: cover; /* Keeps it proportional */
-            background-position: center; /* Centers the background image */
-        }
+        background-image: url('../images/bg1.jpg');
     }
 
     .logo {
@@ -149,7 +145,7 @@
     }
 
     .profile-btn {
-
+        background-color: #f8a01b;
         right: 25%;
         font-size: 0.8rem;
         padding: 6px 12px;
